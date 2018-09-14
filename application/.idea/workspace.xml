@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a8c0769e-445f-44c7-bcf2-1649d7a428a8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/public/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/public/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/public/appLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/public/appLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/public/appRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/public/appRegistration.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/index.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/index.mustache" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -68,7 +63,7 @@
       <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/public/components/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
+            <state relative-caret-position="112">
               <caret line="373" lean-forward="true" selection-start-line="373" selection-end-line="373" />
               <folding>
                 <element signature="e#1109#1427#0" />
@@ -295,7 +290,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL&#10;PostgreSQL" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/пип/lab4pip" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -397,12 +392,20 @@
       <workItem from="1536770258139" duration="5762000" />
       <workItem from="1536810576769" duration="2307000" />
       <workItem from="1536818945808" duration="24864000" />
-      <workItem from="1536900400314" duration="15867000" />
+      <workItem from="1536900400314" duration="16362000" />
     </task>
+    <task id="LOCAL-00001" summary="Redux is added">
+      <created>1536936045501</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1536936045501</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="286395000" />
+    <option name="totallyTimeSpent" value="286890000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -434,12 +437,12 @@
       <window_info id="Image Layers" order="5" />
       <window_info anchor="bottom" id="Java Enterprise" order="9" weight="0.32843137" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="11" visible="true" weight="0.329582" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.7395498" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32843137" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32843137" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.32843137" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25189108" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25189108" />
       <window_info anchor="right" id="Bean Validation" order="7" weight="0.32980332" />
       <window_info id="Web" order="6" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="6" />
@@ -492,6 +495,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Redux is added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Redux is added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -705,7 +712,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/public/components/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
+        <state relative-caret-position="112">
           <caret line="373" lean-forward="true" selection-start-line="373" selection-end-line="373" />
           <folding>
             <element signature="e#1109#1427#0" />

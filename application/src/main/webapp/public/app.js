@@ -2,47 +2,11 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {points: [], r: 0};
-    }
+    };
 
-    onCreate(newPoint) {
-        let body = '?x=' + newPoint['x'] + '&y=' + newPoint['y'] + '&r=' + this.state.r;
-        let urlNew = 'http://' + window.location.host + '/addpoint' + body;
-        let self = this;
-        this.getC
-        $.ajax({
-            url: urlNew,
-        })
-            .then(function (data) {
-                self.setState({points: data});
-            })
-    }
-
-    componentWillMount() {
-        let self = this;
-        let urlNew = 'http://' + window.location.host + '/allpoints';
-        this.getC
-        $.ajax({
-            url: urlNew,
-        })
-            .then(function (data) {
-                self.setState({points: data});
-                self.setState({r: data[0].r});
-            });
-    }
-
-    setR(r) {
-        let body = '?r=' + r;
-        let urlNew = 'http://' + window.location.host + '/changeR' + body;
-        let self = this;
-        this.setState({r: r});
-        this.getC
-        $.ajax({
-            url: urlNew,
-        })
-            .then(function (data) {
-                self.setState({points: data});
-            });
+    componentDidMount() {
+        console.log("hi");
+        this.props.getAllPointsAction();
     }
 
     render() {
@@ -53,25 +17,122 @@ class App extends React.Component {
             paddingRight: "5%"
         };
         return (
-            <div className="container">
-                <LogOut/>
-                <table style={tableCss}>
-                    <tbody>
-                    <tr>
-                        <td style={columnCss}>
-                            <Form onCreate={this.onCreate.bind(this)} setR={this.setR.bind(this)}/>
-                        </td>
-                        <td>
-                            <Canvas rValue={this.state.r} points={this.state.points}
-                                    onCreate={this.onCreate.bind(this)}/>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <PointList points={this.state.points}/>
+            <div>
+                <div className="container">
+                    <LogOut/>
+                    <table style={tableCss}>
+                        <tbody>
+                        <tr>
+                            <td style={columnCss}>
+                                <Form onCreate={this.props.addPointAction} setR={this.props.changeRAction}/>
+                            </td>
+                            <td>
+                                <Canvas rValue={this.props.r} points={this.props.points}
+                                        onCreate={this.props.addPointAction}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <PointList points={this.props.points}/>
+                </div>
             </div>
         )
     }
+}
+
+class Form extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {x: '', y: 0, r: '', errorX: 'X:', errorR: 'R:'};
+    }
+
+    handleChange = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        if (name === "x") {
+            if (isNaN(value) && value !== '-') {
+                this.setState({errorX: 'X должно быть числом'});
+            }
+            else if (value > 5 || value < -5)
+                this.setState({errorX: 'X должно быть от -5 до 5'});
+            else {
+                this.setState({errorX: 'X:'});
+                this.setState({x: value});
+            }
+        }
+        if (name === "y") {
+            this.setState({y: value});
+        }
+        if (name === "r") {
+            if (isNaN(value) && value !== '-')
+                this.setState({errorR: 'R должно быть числом'});
+            else if (value > 5 || value < -3)
+                this.setState({errorR: 'R должно быть от -3 до 5'});
+            else {
+                this.setState({errorR: 'R:'});
+                this.setState({r: value});
+                this.props.setR(Math.abs(value));
+            }
+        }
+    };
+
+    submit = (submitEvent)=> {
+        if (this.state.x === '' && this.state.r === '') {
+            this.setState({errorX: 'Выберети Х'});
+            this.setState({errorR: 'Выберети R'});
+        }
+        else if (this.state.x === '') {
+            this.setState({errorX: 'Выберети Х'});
+        }
+        else if (this.state.r === '') {
+            this.setState({errorR: 'Выберети R'});
+        }
+        else {
+            let newPoint = {};
+            newPoint['x'] = Number(this.state.x);
+            newPoint['y'] = Number(this.state.y);
+            this.setState({errorX: 'X:'});
+            this.setState({errorR: 'R:'});
+            this.props.onCreate(newPoint, this.state.r);
+        }
+        submitEvent.preventDefault();
+
+    };
+
+    render() {
+        const divStyle = {
+            marginTop: "3%",
+            marginBottom: "0%"
+        };
+        return (
+            <div>
+                <form onSubmit={this.submit}>
+                    <div style={divStyle}>
+                        <label>{this.state.errorX}</label>
+                    </div>
+                    <input id="x" className="form-control" name="x" value={this.state.x}
+                           onChange={this.handleChange} inputType="text"
+                           placeholder="введите X"/>
+                    <label style={divStyle}>Y={this.state.y}</label>
+                    <input id="y" name="y" type="range" min="-3" max="5" value={this.state.y}
+                           onChange={this.handleChange}
+                           step="0.01"/>
+                    <div style={divStyle}>
+                        <label>{this.state.errorR}</label>
+                    </div>
+                    <input id="r" className="form-control" name="r" value={this.state.r}
+                           onChange={this.handleChange} inputType="text"
+                           placeholder="введите R"/>
+
+                    <button style={divStyle} className="btn btn-primary btn-sm" type="submit"
+                            onClick={this.submit}>Submit
+                    </button>
+                </form>
+            </div>
+        )
+    }
+
+
 }
 
 class Canvas extends React.Component {
@@ -133,7 +194,7 @@ class Canvas extends React.Component {
         let newPoint = {};
         newPoint['x'] = x;
         newPoint['y'] = y;
-        this.props.onCreate(newPoint);
+        this.props.onCreate(newPoint, this.props.rValue);
     }
 
     componentDidUpdate() {
@@ -150,105 +211,6 @@ class Canvas extends React.Component {
             </div>
         );
     }
-}
-
-class Form extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.submit = this.submit.bind(this);
-        this.state = {x: '', y: 0, r: '', errorX: 'X:', errorR: 'R:'};
-    }
-
-    handleChange(event) {
-        let name = event.target.name;
-        let value = event.target.value;
-        if (name === "x") {
-            if (isNaN(value) && value !== '-') {
-                this.setState({errorX: 'X должно быть числом'});
-            }
-            else if (value > 5 || value < -5)
-                this.setState({errorX: 'X должно быть от -5 до 5'});
-            else {
-                this.setState({errorX: 'X:'});
-                this.setState({x: value});
-            }
-        }
-        if (name === "y") {
-            this.setState({y: value});
-        }
-        if (name === "r") {
-            if (isNaN(value) && value !== '-')
-                this.setState({errorR: 'R должно быть числом'});
-            else if (value > 5 || value < -3)
-                this.setState({errorR: 'R должно быть от -3 до 5'});
-            else {
-                this.setState({errorR: 'R:'});
-                this.setState({r: value});
-                console.log("did it happen before?")
-                this.props.setR(Math.abs(value));
-            }
-        }
-    }
-
-    submit(submitEvent) {
-        if (this.state.x === '' && this.state.r === '') {
-            this.setState({errorX: 'Выберети Х'});
-            this.setState({errorR: 'Выберети R'});
-        }
-        else if (this.state.x === '') {
-            this.setState({errorX: 'Выберети Х'});
-        }
-        else if (this.state.r === '') {
-            this.setState({errorR: 'Выберети R'});
-        }
-        else {
-            let newPoint = {};
-            newPoint['x'] = Number(this.state.x);
-            newPoint['y'] = Number(this.state.y);
-            this.setState({errorX: 'X:'});
-            this.setState({errorR: 'R:'});
-            this.props.onCreate(newPoint);
-            this.setState();
-        }
-        submitEvent.preventDefault();
-
-    }
-
-    render() {
-        const divStyle = {
-            marginTop: "3%",
-            marginBottom: "0%"
-        };
-        return (
-            <div>
-                <form onSubmit={this.submit}>
-                    <div style={divStyle}>
-                        <label>{this.state.errorX}</label>
-                    </div>
-                    <input id="x" className="form-control" name="x" value={this.state.x}
-                           onChange={this.handleChange} inputType="text"
-                           placeholder="введите X"/>
-                    <label style={divStyle}>Y={this.state.y}</label>
-                    <input id="y" name="y" type="range" min="-3" max="5" value={this.state.y}
-                           onChange={this.handleChange}
-                           step="0.01"/>
-                    <div style={divStyle}>
-                        <label>{this.state.errorR}</label>
-                    </div>
-                    <input id="r" className="form-control" name="r" value={this.state.r}
-                           onChange={this.handleChange} inputType="text"
-                           placeholder="введите R"/>
-
-                    <button style={divStyle} className="btn btn-primary btn-sm" type="submit"
-                            onClick={this.submit}>Submit
-                    </button>
-                </form>
-            </div>
-        )
-    }
-
-
 }
 
 class PointList extends React.Component {
@@ -314,6 +276,122 @@ class LogOut extends React.Component {
     }
 }
 
+const addPointAction = (newPoint, r) => {
+    return dispatch => {
+        let body = '?x=' + newPoint['x'] + '&y=' + newPoint['y'] + '&r=' + r;
+        let urlNew = 'http://' + window.location.host + '/addpoint' + body;
+        $.ajax({
+            url: urlNew,
+        })
+            .then((data) => {
+                dispatch(addPointSuccess(data));
+            })
+    };
+};
+
+const addPointSuccess = data => ({
+    type: "ADD_POINT",
+    data: data,
+    r: r
+});
+
+const changeRAction = (r) => {
+    return dispatch => {
+        let body = '?r=' + r;
+        let urlNew = 'http://' + window.location.host + '/changeR' + body;
+        $.ajax({
+            url: urlNew,
+        })
+            .then((data) => {
+                dispatch(changeRSuccess(data, r));
+            })
+    };
+};
+
+const changeRSuccess = (data, r) => ({
+    type: "CHANGE_R",
+    data: data,
+    r: r
+});
+
+const getAllPointsAction = () => {
+    return dispatch => {
+        let urlNew = 'http://' + window.location.host + '/allpoints';
+        $.ajax({
+            url: urlNew,
+        })
+            .then((data) => {
+                dispatch(getAllPoints(data));
+            })
+    };
+};
+
+const getAllPoints = data => ({
+    type: "ALL_POINTS",
+    data: data
+});
+
+const initialState = {
+    points: [],
+    r: 0
+};
+
+const indexReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case "ADD_POINT":
+            return {
+                points: action.data,
+                r: state.r
+            };
+        case "CHANGE_R":
+            return {
+                points: action.data,
+                r: action.r
+            };
+        case "ALL_POINTS":
+            console.log(action.data[0].r);
+            console.log(action.data.length);
+            var rValue=0;
+            if(action.data.length !=0){
+                rValue = action.data[0].r;
+                console.log(rValue);
+            }
+            return {
+                points: action.data,
+                r: rValue
+            };
+        default:
+            return state;
+    }
+};
+
+const mapStateToPropsApp = (state) => {
+    return {
+        points: state.points,
+        r: state.r
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addPointAction: (newPoint, r) => {
+            dispatch(addPointAction(newPoint, r))
+        },
+        getAllPointsAction: () => {
+            dispatch(getAllPointsAction())
+        },
+        changeRAction: (r) => {
+            dispatch(changeRAction(r))
+        }
+    }
+};
+
+const store = Redux.createStore(indexReducer, Redux.applyMiddleware(ReduxThunk.default));
+
+const ConnectedApp = ReactRedux.connect(mapStateToPropsApp, mapDispatchToProps)(App);
+
 ReactDOM.render(
-        <App/>,
-    document.getElementById('root'));
+    <ReactRedux.Provider store={store}>
+        <ConnectedApp/>
+    </ReactRedux.Provider>, document.getElementById('root'));
+
