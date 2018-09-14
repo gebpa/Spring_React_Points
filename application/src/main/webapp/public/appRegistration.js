@@ -81,7 +81,7 @@ class App extends React.Component {
         }
         console.log((this.state.errorPassword+this.state.errorRepeatPassword+this.state.errorName).length);
         if ((this.state.errorPassword+this.state.errorRepeatPassword+this.state.errorName).length===0) {
-            let urlNew = 'http://localhost:8080/createnewuser';
+            let urlNew = 'http://'+window.location.host+'/createnewuser';
             let self = this;
             console.log(urlNew);
             this.getC
@@ -102,7 +102,7 @@ class App extends React.Component {
                         this.setState({errorRepeatPassword: 'Passwords are different'});
                     }
                     if (data.includes("Success!")){
-                        document.location.href='http://localhost:8080/login';
+                        document.location.href='http://'+window.location.host+'/login';
                     }
                 });
         }

@@ -7,7 +7,7 @@ class App extends React.Component {
 
     onCreate(newPoint) {
         let body = '?x=' + newPoint['x'] + '&y=' + newPoint['y'] + '&r=' + this.state.r;
-        let urlNew = 'http://localhost:8080/addpoint' + body;
+        let urlNew = 'http://' + window.location.host + '/addpoint' + body;
         let self = this;
         this.getC
         $.ajax({
@@ -20,9 +20,10 @@ class App extends React.Component {
 
     componentWillMount() {
         let self = this;
+        let urlNew = 'http://' + window.location.host + '/allpoints';
         this.getC
         $.ajax({
-            url: "http://localhost:8080/allpoints",
+            url: urlNew,
         })
             .then(function (data) {
                 self.setState({points: data});
@@ -32,7 +33,7 @@ class App extends React.Component {
 
     setR(r) {
         let body = '?r=' + r;
-        let urlNew = 'http://localhost:8080/changeR' + body;
+        let urlNew = 'http://' + window.location.host + '/changeR' + body;
         let self = this;
         this.setState({r: r});
         this.getC
@@ -57,11 +58,12 @@ class App extends React.Component {
                 <table style={tableCss}>
                     <tbody>
                     <tr>
-                        <td style={columnCss} >
-                            <Form  onCreate={this.onCreate.bind(this)} setR={this.setR.bind(this)}/>
+                        <td style={columnCss}>
+                            <Form onCreate={this.onCreate.bind(this)} setR={this.setR.bind(this)}/>
                         </td>
-                        <td >
-                            <Canvas rValue={this.state.r} points={this.state.points} onCreate={this.onCreate.bind(this)}/>
+                        <td>
+                            <Canvas rValue={this.state.r} points={this.state.points}
+                                    onCreate={this.onCreate.bind(this)}/>
                         </td>
                     </tr>
                     </tbody>
@@ -159,10 +161,10 @@ class Form extends React.Component {
     }
 
     handleChange(event) {
-        let name=event.target.name;
-        let value=event.target.value;
+        let name = event.target.name;
+        let value = event.target.value;
         if (name === "x") {
-            if (isNaN(value) && value!=='-') {
+            if (isNaN(value) && value !== '-') {
                 this.setState({errorX: 'X должно быть числом'});
             }
             else if (value > 5 || value < -5)
@@ -176,11 +178,11 @@ class Form extends React.Component {
             this.setState({y: value});
         }
         if (name === "r") {
-            if (isNaN(value) && value!=='-')
+            if (isNaN(value) && value !== '-')
                 this.setState({errorR: 'R должно быть числом'});
             else if (value > 5 || value < -3)
                 this.setState({errorR: 'R должно быть от -3 до 5'});
-            else{
+            else {
                 this.setState({errorR: 'R:'});
                 this.setState({r: value});
                 console.log("did it happen before?")
@@ -190,14 +192,14 @@ class Form extends React.Component {
     }
 
     submit(submitEvent) {
-        if (this.state.x==='' && this.state.r===''){
+        if (this.state.x === '' && this.state.r === '') {
             this.setState({errorX: 'Выберети Х'});
             this.setState({errorR: 'Выберети R'});
         }
-        else if (this.state.x===''){
+        else if (this.state.x === '') {
             this.setState({errorX: 'Выберети Х'});
         }
-        else if (this.state.r===''){
+        else if (this.state.r === '') {
             this.setState({errorR: 'Выберети R'});
         }
         else {
@@ -216,7 +218,7 @@ class Form extends React.Component {
     render() {
         const divStyle = {
             marginTop: "3%",
-            marginBottom : "0%"
+            marginBottom: "0%"
         };
         return (
             <div>
@@ -238,7 +240,9 @@ class Form extends React.Component {
                            onChange={this.handleChange} inputType="text"
                            placeholder="введите R"/>
 
-                    <button style={divStyle} className="btn btn-primary btn-sm" type="submit" onClick={this.submit}>Submit</button>
+                    <button style={divStyle} className="btn btn-primary btn-sm" type="submit"
+                            onClick={this.submit}>Submit
+                    </button>
                 </form>
             </div>
         )
@@ -296,7 +300,7 @@ class LogOut extends React.Component {
 
     render() {
         const divStyle = {
-            margin : '1%',
+            margin: '1%',
             marginLeft: '0%'
         };
         return (
@@ -310,4 +314,6 @@ class LogOut extends React.Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(
+        <App/>,
+    document.getElementById('root'));

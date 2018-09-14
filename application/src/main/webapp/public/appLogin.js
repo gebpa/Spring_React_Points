@@ -39,7 +39,7 @@ class App extends React.Component {
             this.setState({errorPassword: 'You forgot to enter userPassword'});
         }
         else {
-            let urlNew = 'http://localhost:8080/login';
+            let urlNew = 'http://'+window.location.host+'/login';
             let self = this;
             this.getC
             $.ajax({
@@ -56,7 +56,7 @@ class App extends React.Component {
                     let last=data.search("</title>");
                     let title=data.slice(first,last);
                     if (title.includes('Points')){
-                        document.location.href='http://localhost:8080/index';
+                        document.location.href='http://'+window.location.host+'/index';
                     }
                     if (title.includes('Login Page')){
                         self.setState({thereIsNoSuchUser: 'There is no such user or you enter a wrong password'});
